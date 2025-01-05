@@ -18,7 +18,7 @@ runs = 5000 # Number of realizations.
 
 EAD = stats.uniform.rvs(0, 2, size=n)
 LGD = ones(n)
-PD = 0.25 * ones(n);
+PD = 0.25 * ones(n)
 rho = 0.2
 losses = zeros(runs)
 for i in range(runs):
@@ -41,36 +41,33 @@ print(VaR) # Value-at-risk
 TCE = mean(losses[losses > VaR])
 print(TCE)  # Tail conditional expectation
 
+# # Bernoulli mixture model
+# def simBernoulliMixture(n, EAD, LGD, Pdist):
+#     P = Pdist.rvs(1)
+#     binDist = stats.bernoulli(P)
+#     default = binDist.rvs(n)
+#     losses = default * EAD * LGD
+#     return sum(losses)
 
-# Bernoulli mixture model
-def simBernoulliMixture(n, EAD, LGD, Pdist):
-    P = Pdist.rvs(1)
-    binDist = stats.bernoulli(P)
-    default = binDist.rvs(n)
-    losses = default * EAD * LGD
-    return sum(losses)
+# Pdist = stats.beta(1, 3)
+# print(Pdist.mean())   # PD = 0.25
+# losses = zeros(runs)
+# for i in range(runs):
+#     losses[i] = simBernoulliMixture(n, EAD, LGD, Pdist)
 
-Pdist = stats.beta(1, 3)
-print(Pdist.mean())   # PD = 0.25
-losses = zeros(runs)
-for i in range(runs):
-    losses[i] = simBernoulliMixture(n, EAD, LGD, Pdist)
+# # Histogram total loss distribution
+# plt.figure()   # create a new plot window
+# plt.hist(losses, bins=100, density=False)
+# plt.show()
 
-# Histogram total loss distribution
-plt.figure()   # create a new plot window
-plt.hist(losses, bins=100, density=False)
-plt.show()
+# print(mean(losses))  # Expected loss
+# print(std(losses))   # Unexpected loss
 
-print(mean(losses))  # Expected loss
-print(std(losses))   # Unexpected loss
+# alpha = 0.95
+# sortLosses = sort(losses)
+# idx = int(floor(alpha * runs))
+# VaR = sortLosses[idx]
+# print(VaR) # Value-at-risk
 
-alpha = 0.95
-sortLosses = sort(losses)
-idx = int(floor(alpha * runs))
-VaR = sortLosses[idx]
-print(VaR) # Value-at-risk
-
-TCE = mean(losses[losses > VaR])
-print(TCE)  # Tail conditional expectation
-
-
+# TCE = mean(losses[losses > VaR])
+# print(TCE)  # Tail conditional expectation
